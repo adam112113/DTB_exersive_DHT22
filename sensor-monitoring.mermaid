@@ -1,0 +1,55 @@
+erDiagram
+    LOCATION ||--o{ SENSOR : "has"
+    SENSOR ||--o{ READING : "produces"
+    SENSOR ||--o{ ALERT_RULE : "has"
+    READING ||--o{ ALERT : "triggers"
+    ALERT_RULE ||--o{ ALERT : "generates"
+
+    LOCATION {
+        int location_id PK
+        string name
+        string description
+        string building
+        string floor
+        datetime created_at
+    }
+
+    SENSOR {
+        int sensor_id PK
+        int location_id FK
+        string sensor_type
+        string model
+        string unit_of_measurement
+        boolean is_active
+        datetime installed_date
+        datetime last_maintenance
+    }
+
+    READING {
+        int reading_id PK
+        int sensor_id FK
+        float value
+        datetime timestamp
+        string status
+    }
+
+    ALERT_RULE {
+        int rule_id PK
+        int sensor_id FK
+        float min_threshold
+        float max_threshold
+        string severity
+        boolean is_active
+        datetime created_at
+    }
+
+    ALERT {
+        int alert_id PK
+        int reading_id FK
+        int rule_id FK
+        string alert_type
+        string message
+        datetime triggered_at
+        boolean is_resolved
+        datetime resolved_at
+    }

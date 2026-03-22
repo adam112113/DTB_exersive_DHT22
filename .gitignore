@@ -1,0 +1,72 @@
+# Sensor Monitoring Project Files
+
+## Build artifacts
+build/
+*.o
+*.obj
+sensor_monitor
+test_dht22
+*.exe
+
+## Database files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+## Backup files
+backup_*.db
+*.backup
+
+## Export files
+*.csv
+export*.csv
+data_*.csv
+
+## Log files
+*.log
+logs/
+
+## OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+## IDE files
+.vscode/
+.idea/
+*.sublime-*
+*.code-workspace
+
+## Temporary files
+tmp/
+temp/
+*.tmp
+
+## Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+## Precompiled Headers
+*.gch
+*.pch
+
+## Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+## Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+## Executables
+*.exe
+*.out
+*.app
