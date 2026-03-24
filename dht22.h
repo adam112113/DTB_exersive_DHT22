@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define MAXTIMINGS 85
+#define MAX_TIMINGS 85
 
 class DHT22 {
 private:
@@ -45,7 +45,7 @@ public:
         pinMode(pin, INPUT);
 
         // Detect change and read data
-        for (i = 0; i < MAXTIMINGS; i++) {
+        for (i = 0; i < MAX_TIMINGS; i++) {
             counter = 0;
             while (digitalRead(pin) == laststate) {
                 counter++;
