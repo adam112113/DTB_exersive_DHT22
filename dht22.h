@@ -87,6 +87,6 @@ public:
 
         return false;
     }
-};
+}; 
 
 #endif // DHT22_H
