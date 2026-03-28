@@ -51,6 +51,12 @@ Complete list of files for the DHT22 Sensor Monitoring System project.
 ## 📖 DOCUMENTATION
 
 ### Main Documentation
+- **`GETTING_STARTED.md`** - **START HERE!** Step-by-step setup guide  
+  Complete chronological guide from hardware to running system
+  
+- **`SETUP_FLOWCHART.txt`** - Visual flowchart  
+  Simple overview of all steps in order
+  
 - **`README.md`** - Complete project documentation (500+ lines)  
   Installation, wiring, usage, queries, troubleshooting
   
@@ -119,9 +125,10 @@ DTB/
 ## 🚀 USAGE GUIDE
 
 ### For First-Time Setup
-1. Start with: **`README.md`**
-2. Run: **`setup.sh`**
-3. Test: **`test_dht22.cpp`**
+1. Start with: **`GETTING_STARTED.md`** ← Read this first!
+2. Quick view: **`SETUP_FLOWCHART.txt`**
+3. Run: **`setup.sh`**
+4. Test: **`test_dht22.cpp`**
 
 ### For Daily Use
 1. Reference: **`QUICK_REFERENCE.md`**
@@ -149,9 +156,9 @@ Include these files:
 | Category | Files | Total Lines |
 |----------|-------|-------------|
 | C++ Code | 3 | ~850 |
-| SQL | 3 | ~550 |
-| Documentation | 5 | ~1200 |
+| SQL | 3 | ~550 |7 | ~1600 |
 | Build System | 3 | ~150 |
+| **TOTAL** | **16** | **~31
 | **TOTAL** | **14** | **~2750** |
 
 ---
@@ -178,9 +185,11 @@ sqlite3 ~/sensor_monitoring.db "SELECT * FROM latest_readings;"
 
 | File | Purpose | When to Use |
 |------|---------|-------------|
-| README.md | Complete guide | First time, troubleshooting |
+| GETTING_STARTED.md | Step-by-step | **START HERE - First time!** |
+| SETUP_FLOWCHART.txt | Visual guide | Quick overview |
+| README.md | Complete guide | Detailed info, troubleshooting |
 | QUICK_REFERENCE.md | Commands | Daily use, quick lookup |
-| PROJECT_SUMMARY.md | Overview | Understanding, assessment |
+| PROJECT_SUMMARY.md | Overview | Understanding, assignment |
 | schema_sqlite.sql | Database setup | Initial installation |
 | queries.sql | Data analysis | Exploring data |
 | setup.sh | Installation | First-time setup |

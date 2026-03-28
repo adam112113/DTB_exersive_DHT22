@@ -1,0 +1,192 @@
+┌──────────────────────────────────────────────────────────────────┐
+│          SENSOR MONITORING SYSTEM - SETUP FLOWCHART              │
+│                  Complete Steps in This Order                    │
+└──────────────────────────────────────────────────────────────────┘
+
+START HERE ↓
+
+┌────────────────────────────────────────────────────────────────┐
+│ STEP 1: GATHER HARDWARE (Day 1)                               │
+├────────────────────────────────────────────────────────────────┤
+│ □ Raspberry Pi (any model with GPIO)                          │
+│ □ DHT22 sensor (~€5-10)                                       │
+│ □ 10kΩ resistor (brown-black-orange)                          │
+│ □ 3-4 jumper wires                                            │
+│ □ Breadboard (optional)                                       │
+└────────────────────────────────────────────────────────────────┘
+                              ↓
+┌────────────────────────────────────────────────────────────────┐
+│ STEP 2: WIRE THE SENSOR (10 min) - Pi must be OFF!            │
+├────────────────────────────────────────────────────────────────┤
+│ Connect DHT22 to Raspberry Pi:                                │
+│   DHT22 Pin 1 (VCC)  →  Raspberry Pi Pin 1 (3.3V)            │
+│   DHT22 Pin 2 (DATA) →  Raspberry Pi Pin 7 (GPIO4)           │
+│   DHT22 Pin 4 (GND)  →  Raspberry Pi Pin 6 (GND)             │
+│                                                                │
+│ ⚠️ CRITICAL: Add 10kΩ resistor between VCC and DATA!          │
+│                                                                │
+│ See: WIRING_GUIDE.md for diagrams                             │
+└────────────────────────────────────────────────────────────────┘
+                              ↓
+┌────────────────────────────────────────────────────────────────┐
+│ STEP 3: POWER ON & COPY FILES (5 min)                         │
+├────────────────────────────────────────────────────────────────┤
+│ Power on your Raspberry Pi                                    │
+│                                                                │
+│ Copy all these files to: /home/pi/sensor_project/             │
+│   • sensor_monitor.cpp                                        │
+│   • dht22.h                                                   │
+│   • test_dht22.cpp                                            │
+│   • schema_sqlite.sql                                         │
+│   • setup.sh                                                  │
+│   • Makefile, CMakeLists.txt                                  │
+│   • All .md files                                             │
+│                                                                │
+│ Methods: USB drive, scp, or git clone                         │
+└────────────────────────────────────────────────────────────────┘
+                              ↓
+┌────────────────────────────────────────────────────────────────┐
+│ STEP 4: RUN SETUP SCRIPT (10 min)                             │
+├────────────────────────────────────────────────────────────────┤
+│ Open Terminal on Raspberry Pi and type:                       │
+│                                                                │
+│   cd ~/sensor_project                                         │
+│   chmod +x setup.sh                                           │
+│   ./setup.sh                                                  │
+│                                                                │
+│ Answer prompts:                                               │
+│   • Enter password when asked (usually: raspberry)            │
+│   • Type 'y' to continue                                      │
+│   • Type 'y' to create database                               │
+│   • Type 'y' to create service (optional)                     │
+│                                                                │
+│ ⏱️ This takes 5-10 minutes - be patient!                       │
+└────────────────────────────────────────────────────────────────┘
+                              ↓
+┌────────────────────────────────────────────────────────────────┐
+│ STEP 5: TEST THE SENSOR (2 min)                               │
+├────────────────────────────────────────────────────────────────┤
+│ In Terminal:                                                  │
+│   cd ~/sensor_project                                         │
+│   sudo ./test_dht22                                           │
+│                                                                │
+│ Should show:                                                  │
+│   ✓ Reading #1                                                │
+│     🌡️  Temperature: 22.3°C                                   │
+│     💧 Humidity: 45.8%                                        │
+│                                                                │
+│ If YES → Press Ctrl+C and continue to Step 6                  │
+│ If NO  → Check wiring, see troubleshooting                    │
+└────────────────────────────────────────────────────────────────┘
+                              ↓
+┌────────────────────────────────────────────────────────────────┐
+│ STEP 6: START MONITORING (1 min)                              │
+├────────────────────────────────────────────────────────────────┤
+│ In Terminal:                                                  │
+│   cd ~/sensor_project                                         │
+│   sudo ./sensor_monitor 60                                    │
+│                │                                               │
+│                └── Reads every 60 seconds                      │
+│                                                                │
+│ Should show:                                                  │
+│   Database opened successfully                                │
+│   [timestamp]                                                 │
+│   🌡️  Temperature: 22.5°C                                     │
+│   💧 Humidity: 46.2%                                          │
+│   ✓ Temperature saved                                         │
+│   ✓ Humidity saved                                            │
+│                                                                │
+│ ✅ IT'S WORKING! Let it run for a few minutes                  │
+└────────────────────────────────────────────────────────────────┘
+                              ↓
+┌────────────────────────────────────────────────────────────────┐
+│ STEP 7: VIEW YOUR DATA (2 min)                                │
+├────────────────────────────────────────────────────────────────┤
+│ Open a NEW Terminal window and type:                          │
+│                                                                │
+│   sqlite3 ~/sensor_monitoring.db "SELECT * FROM latest_readings;" │
+│                                                                │
+│ Try other queries:                                            │
+│   sqlite3 ~/sensor_monitoring.db "SELECT COUNT(*) FROM reading;" │
+│   sqlite3 ~/sensor_monitoring.db "SELECT * FROM sensor_stats_24h;" │
+│                                                                │
+│ See queries.sql for more examples                             │
+└────────────────────────────────────────────────────────────────┘
+                              ↓
+┌────────────────────────────────────────────────────────────────┐
+│ ✅ SUCCESS! SYSTEM IS RUNNING                                  │
+├────────────────────────────────────────────────────────────────┤
+│ You now have:                                                 │
+│   ✓ Sensor reading temp & humidity                           │
+│   ✓ Data being stored in database                            │
+│   ✓ Alerts being generated                                   │
+│   ✓ Complete IoT monitoring system                           │
+│                                                                │
+│ Next: Let it run overnight to collect data for analysis       │
+└────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+
+QUICK TROUBLESHOOTING
+
+Problem                          Solution
+──────────────────────────────────────────────────────────────────
+Sensor not reading              → Check wiring & resistor
+                                → Make sure to use: sudo
+
+"Permission denied"             → Always run with sudo:
+                                  sudo ./sensor_monitor 60
+
+"Database not found"            → Run setup.sh again
+                                → Or create manually:
+                                  sqlite3 ~/sensor_monitoring.db < schema_sqlite.sql
+
+"wiringPi not found"            → Run setup.sh, it installs it
+                                → Or: sudo apt-get install wiringpi
+
+Compile errors                  → Make sure all .cpp and .h files copied
+                                → Run: make clean && make
+
+═══════════════════════════════════════════════════════════════════
+
+DOCUMENTS CHEAT SHEET
+
+When you need...                 Read this file
+──────────────────────────────────────────────────────────────────
+Step-by-step guide              → GETTING_STARTED.md (this is best!)
+Detailed wiring help            → WIRING_GUIDE.md
+Quick commands                  → QUICK_REFERENCE.md
+Full documentation              → README.md
+SQL query examples              → queries.sql
+Project understanding           → PROJECT_SUMMARY.md
+File list                       → FILE_INDEX.md
+
+═══════════════════════════════════════════════════════════════════
+
+ABSOLUTE MINIMUM COMMANDS (Copy & Paste)
+
+# 1. Make script executable
+cd ~/sensor_project
+chmod +x setup.sh
+
+# 2. Run setup (installs everything)
+./setup.sh
+
+# 3. Test sensor
+sudo ./test_dht22
+
+# 4. Start monitoring (Ctrl+C to stop)
+sudo ./sensor_monitor 60
+
+# 5. View data (in separate terminal)
+sqlite3 ~/sensor_monitoring.db "SELECT * FROM latest_readings;"
+
+═══════════════════════════════════════════════════════════════════
+
+⏱️  TOTAL TIME: ~30-45 minutes from start to finish
+
+📊 RESULT: Working IoT sensor system with database!
+
+🎓 FOR ASSIGNMENT: You have everything needed for DTB project
+
+═══════════════════════════════════════════════════════════════════

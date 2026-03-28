@@ -14,6 +14,7 @@
 #include <string>
 #include <sstream>
 #include <ctime>
+#include <cstdlib>
 #include <sqlite3.h>
 #include <wiringPi.h>
 #include <unistd.h>
@@ -23,8 +24,24 @@
 #define MAX_TIMINGS 85
 #define DHT_TIMEOUT 100
 
-// Database configuration
-#define DB_PATH "/home/pi/sensor_monitoring.db"
+// Database configuration - can be overridden with environment variable
+// Set with: export SENSOR_DB_PATH=/path/to/database.db
+const char* getDbPath() {
+    const char* envPath = std::getenv("SENSOR_DB_PATH");
+    if (envPath != nullptr) {
+        return envPath;
+    }
+    
+    // Try to use current user's home directory
+    const char* home = std::getenv("HOME");
+    if (home != nullptr) {
+        static std::string dbPath = std::string(home) + "/sensor_monitoring.db";
+        return dbPath.c_str();
+    }
+    
+    // Fallback to /home/pi
+    return "/home/pi/sensor_monitoring.db";
+}
 
 // Sensor IDs (must match your database)
 #define TEMP_SENSOR_ID 1    // Temperature sensor ID
@@ -232,8 +249,13 @@ int main(int argc, char *argv[]) {
     }
     
     // Open database
+    const char* dbPath = getDbPath();
+    std::cout << "Database path: " << dbPath << std::endl;
+    
     Database db;
-    if (!db.open(DB_PATH)) {
+    if (!db.open(dbPath)) {
+        std::cerr << "\n⚠️  Database file not found!" << std::endl;
+        std::cerr << "Create it with: sqlite3 " << dbPath << " < schema_sqlite.sql" << std::endl;
         return 1;
     }
     
